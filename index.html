@@ -481,6 +481,114 @@ footer { color:#647050; }
   .book:hover { transform:none; }
 }
 
+
+/* LIBROS GIRANDO 2.1 - selección flotante móvil */
+#floatingCart21 {
+  display:none;
+  position:fixed;
+  left:14px;
+  right:14px;
+  bottom:14px;
+  z-index:9999;
+  background:#ffffff;
+  border:1px solid #dfd2c1;
+  border-radius:18px;
+  box-shadow:0 12px 30px rgba(55,38,39,.18);
+  padding:12px 14px;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+
+#floatingCart21 .floating-info{
+  display:flex;
+  flex-direction:column;
+  font-size:14px;
+}
+
+#floatingCart21 .floating-total{
+  color:#2e6b55;
+  font-weight:700;
+}
+
+#floatingCart21 button{
+  border:0;
+  background:#2e6b55;
+  color:#fff;
+  border-radius:12px;
+  padding:10px 14px;
+  font-weight:700;
+}
+
+@media(min-width:768px){
+  #floatingCart21{
+    display:none;
+  }
+}
+
+
+/* LIBROS GIRANDO 2.1 - acabado visual portada biblioteca */
+body{
+  background:
+    linear-gradient(rgba(46,107,85,.88),rgba(46,107,85,.82)),
+    linear-gradient(180deg,#f7efe3 0,#fffaf2 330px);
+}
+
+header{
+  position:relative;
+  overflow:hidden;
+  padding:42px 18px 34px;
+  border-radius:0 0 36px 36px;
+  color:#fff;
+  background:
+    linear-gradient(rgba(46,107,85,.82),rgba(46,107,85,.88)),
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.18), transparent 35%);
+}
+
+header::before{
+  content:"📚  📖  📚  📖  📚";
+  position:absolute;
+  inset:auto 0 8px;
+  opacity:.12;
+  font-size:54px;
+  letter-spacing:14px;
+  white-space:nowrap;
+  transform:rotate(-5deg);
+}
+
+header .brand{
+  position:relative;
+  z-index:1;
+  border-color:rgba(255,255,255,.65);
+  color:#fff;
+}
+
+header h1,
+header .subtitle{
+  position:relative;
+  z-index:1;
+  color:#fff;
+}
+
+header h1 em{
+  color:#f4eadb;
+}
+
+
+/* LIBROS GIRANDO 2.1 - panel selección escritorio */
+#floatingCart21{
+  transition:transform .2s ease, opacity .2s ease;
+}
+
+@media(min-width:768px){
+  #floatingCart21{
+    display:none;
+    left:auto;
+    right:24px;
+    bottom:24px;
+    width:260px;
+  }
+}
 </style>
 </head>
 <body>
@@ -817,6 +925,19 @@ function updateSummary() {
       </div>
     `).join('');
   }
+
+  // LIBROS GIRANDO 2.1 - actualización barra flotante
+  const floatingCart21 = document.getElementById('floatingCart21');
+  if (floatingCart21) {
+    if (entries.length) {
+      floatingCart21.style.display = 'flex';
+      document.getElementById('floatingCount21').textContent =
+        items === 1 ? '1 libro seleccionado' : items + ' libros seleccionados';
+      document.getElementById('floatingTotal21').textContent = ARS.format(total);
+    } else {
+      floatingCart21.style.display = 'none';
+    }
+  }
 }
 
 searchEl.addEventListener('input', renderBooks);
@@ -858,5 +979,16 @@ El formulario de reserva se habilitará en el próximo paso.`);
 renderBooks();
 updateSummary();
 </script>
+
+<div id="floatingCart21">
+  <div class="floating-info">
+    <strong id="floatingCount21">0 libros seleccionados</strong>
+    <span id="floatingTotal21" class="floating-total">$0</span>
+  </div>
+  <button type="button" onclick="document.getElementById('selectionPanel').scrollIntoView({behavior:'smooth'})">
+    Ver selección →
+  </button>
+</div>
+
 </body>
 </html>
